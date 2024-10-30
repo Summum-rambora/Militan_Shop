@@ -7,17 +7,14 @@
 <body>
 <h1>Product List</h1>
 <a href="/addProduct">Add New Product</a>
-<table border="1">
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Price</th>
-  </tr>
-  <tr th:each="product : ${products}">
-    <td th:text="${product.name}">Product Name</td>
-    <td th:text="${product.description}">Product Description</td>
-    <td th:text="${product.price}">Product Price</td>
-  </tr>
-</table>
+
+<div class="product-container">
+  <div class="product-card" th:each="product : ${products}">
+    <h2><a th:href="@{/product/{id}(id=${product.id})}" th:text="${product.name}">Product Name</a></h2>
+    <p th:text="${product.description}">Product Description</p>
+    <p th:text="${product.price} + ' KZT'">Product Price</p>
+  </div>
+</div>
+
 </body>
 </html>
