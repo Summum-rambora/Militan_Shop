@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -6,13 +5,25 @@
 </head>
 <body>
 <h1>Product List</h1>
-<a href="/addProduct">Add New Product</a>
+<div>
+  <a href="/addProduct">Add New Product</a>
+</div>
+
+<div>
+  <a href="/cart">Turn to cart</a>
+</div>
+
+
+
 
 <div class="product-container">
   <div class="product-card" th:each="product : ${products}">
     <h2><a th:href="@{/product/{id}(id=${product.id})}" th:text="${product.name}">Product Name</a></h2>
     <p th:text="${product.description}">Product Description</p>
     <p th:text="${product.price} + ' KZT'">Product Price</p>
+    <form th:action="@{/cart/add/{productId}(productId=${product.id})}" method="post">
+      <button type="submit">Add to cart</button>
+    </form>
   </div>
 </div>
 

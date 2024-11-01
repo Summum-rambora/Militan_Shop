@@ -19,7 +19,16 @@ public class ProductController {
         this.productService = productService;
     }
 
+
+
     @GetMapping("/")
+    public String ShowLoginPage(){
+        return "redirect:/login";
+    }
+
+
+
+    @GetMapping("/main")
     public String viewHomePage(Model model) {
         model.addAttribute("products", productService.getAllProducts());
         return "main";
@@ -34,7 +43,7 @@ public class ProductController {
     @PostMapping("/saveProduct")
     public String saveProduct(Product product) {
         productService.saveProduct(product);
-        return "redirect:/";
+        return "redirect:/main";
     }
 
 
