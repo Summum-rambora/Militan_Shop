@@ -32,11 +32,15 @@ public class WebSecurityConfig {
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails user = User.withUsername("t")
-                .password(passwordEncoder().encode("p")) //
+        UserDetails user = User.withUsername("user")
+                .password(passwordEncoder().encode("user"))
                 .roles("USER")
                 .build();
-        return new InMemoryUserDetailsManager(user);
+        UserDetails admin = User.withUsername("admin")
+                .password(passwordEncoder().encode("admin"))
+                .roles("ADMIN")
+                .build();
+        return new InMemoryUserDetailsManager(user, admin);
     }
 
 
@@ -45,6 +49,7 @@ public class WebSecurityConfig {
         http
 
                 .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/addProduct", "/saveProduct").hasRole("ADMIN")
                         .requestMatchers("/login", "/registration").permitAll()
                         .anyRequest().authenticated()
                 )

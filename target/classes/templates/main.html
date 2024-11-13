@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <title>Product List</title>
 </head>
 <body>
 <h1>Product List</h1>
-<div>
+
+<!-- Ссылка отображается только для ADMIN -->
+<div sec:authorize="hasRole('ADMIN')">
   <a href="/addProduct">Add New Product</a>
 </div>
 
 <div>
   <a href="/cart">Turn to cart</a>
 </div>
-
-
-
 
 <div class="product-container">
   <div class="product-card" th:each="product : ${products}">
@@ -26,6 +25,5 @@
     </form>
   </div>
 </div>
-
 </body>
 </html>

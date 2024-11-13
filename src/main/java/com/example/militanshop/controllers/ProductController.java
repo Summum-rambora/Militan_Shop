@@ -4,6 +4,7 @@ package com.example.militanshop.controllers;
 import com.example.militanshop.models.Product;
 import com.example.militanshop.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,12 +35,15 @@ public class ProductController {
         return "main";
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/addProduct")
     public String addProductPage(Model model) {
         model.addAttribute("product", new Product());
         return "addProduct";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/saveProduct")
     public String saveProduct(Product product) {
         productService.saveProduct(product);
