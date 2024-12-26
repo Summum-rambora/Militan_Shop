@@ -1,29 +1,45 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <title>Product List</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Страница списка продуктов">
+  <title>Список продуктов</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<h1>Product List</h1>
+<header>
+  <img th:src="@{/logo.png}" alt="Логотип" class="logo">
+</header>
 
+<main>
+  <h1>Список продуктов</h1>
 
-<div sec:authorize="hasRole('ADMIN')">
-  <a href="/addProduct">Add New Product</a>
-</div>
-
-<div>
-  <a href="/cart">Turn to cart</a>
-</div>
-
-<div class="product-container">
-  <div class="product-card" th:each="product : ${products}">
-    <h2><a th:href="@{/product/{id}(id=${product.id})}" th:text="${product.name}">Product Name</a></h2>
-    <p th:text="${product.description}">Product Description</p>
-    <p th:text="${product.price} + ' KZT'">Product Price</p>
-    <form th:action="@{/cart/add/{productId}(productId=${product.id})}" method="post">
-      <button type="submit">Add to cart</button>
-    </form>
+  <!-- Ссылка для добавления нового продукта доступна только администратору -->
+  <div sec:authorize="hasRole('ADMIN')">
+    <a href="/addProduct">Добавить новый продукт</a>
   </div>
-</div>
+
+  <!-- Ссылка на корзину -->
+  <div>
+    <a href="/cart">Перейти в корзину</a>
+  </div>
+
+  <!-- Список продуктов -->
+  <div class="product-container">
+    <div class="product-card" th:each="product : ${products}">
+      <h2>
+        <a th:href="@{/product/{id}(id=${product.id})}" th:text="${product.name}">Название продукта</a>
+      </h2>
+      <p th:text="${product.description}">Описание продукта</p>
+      <p th:text="${product.price}"> KZT</p>
+
+
+      <form th:action="@{/cart/add/{productId}(productId=${product.id})}" method="post">
+        <button type="submit">Добавить в корзину</button>
+      </form>
+    </div>
+  </div>
+</main>
 </body>
 </html>

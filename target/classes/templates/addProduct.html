@@ -1,9 +1,11 @@
 <!-- addProduct.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
 <head>
   <title>Add Product</title>
 </head>
+<img src="logo.png" alt="Логотип" class="logo">
 <body>
 <h1>Add New Product</h1>
 <form action="#" th:action="@{/saveProduct}" th:object="${product}" method="post">
