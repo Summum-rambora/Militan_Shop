@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Страница списка продуктов">
+  <title>Список продуктов</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+  <img th:src="@{/logo.png}" alt="Логотип" class="logo">
+</header>
+
+<main>
+  <h1>Список продуктов</h1>
+
+  <div sec:authorize="hasRole('SUPER_ADMIN')">
+    <a href="/admin/users">Страница пользователей</a>
+  </div>
+
+
+  <div sec:authorize="hasRole('ADMIN')">
+    <a href="/addProduct">Добавить новый продукт</a>
+  </div>
+
+
+  <div>
+    <a href="/cart">Перейти в корзину</a>
+  </div>
+
+
+  <form action="/main" method="get">
+    <label for="category">Категория:</label>
+    <select name="categoryId" id="category">
+      <option value="" th:selected="${selectedCategoryId == null}" disabled>Выберите категорию</option>
+      <option value="" th:selected="${selectedCategoryId == null}">Все товары</option>
+      <th:block th:each="category : ${categories}">
+        <option th:value="${category.id}"
+                th:text="${category.name}"
+                th:selected="${category.id == selectedCategoryId}"></option>
+      </th:block>
+    </select>
+    <button type="submit">Фильтровать</button>
+  </form>
+
+
+
+  <div class="product-container">
+    <div class="product-card" th:each="product : ${products}">
+      <img th:src="@{${product.imageUrl}}" alt="Product Image" class="product-image"/>
+      <h2>
+        <a th:href="@{/product/{id}(id=${product.id})}" th:text="${product.name}">Название продукта</a>
+      </h2>
+      <p th:text="${product.description}">Описание продукта</p>
+      <p th:text="${product.category}">Категория</p>
+      <p th:text="${product.price}"> KZT</p>
+
+      <form th:action="@{/cart/add/{productId}(productId=${product.id})}" method="post">
+        <button type="submit">Добавить в корзину</button>
+      </form>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>

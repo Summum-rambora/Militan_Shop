@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<head>
+  <title>Cart</title>
+</head>
+<img src="logo.png" alt="Логотип" class="logo">
+<body>
+<h1>CART</h1>
+<div th:if="${cart.products.isEmpty()}">
+  <p>Cart is empty</p>
+</div>
+<div th:if="${not #lists.isEmpty(cart.products)}" th:each="product : ${cart.products}">
+  <p th:text="${product.name}">Product Name</p>
+  <p th:text="${product.price} + ' KZT'">Product Price</p>
+  <form th:action="@{/cart/remove/{productId}(productId=${product.id})}" method="post">
+    <button type="submit">Delete</button>
+  </form>
+</div>
+<a href="/main">Return to catalog</a>
+</body>
+</html>

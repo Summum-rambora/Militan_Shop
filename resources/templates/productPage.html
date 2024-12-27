@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="'Товар: ' + ${product.name}">Product Page</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<img src="/logo.png" alt="Логотип" class="logo">
+<body>
+<h1 th:text="'Товар: ' + ${product.name}">Товар: Имя продукта</h1>
+<p th:text="'Описание: ' + ${product.description}">Описание: Описание продукта</p>
+<p th:text="'Цена: ' + ${product.price} + ' KZT.'">Цена: Цена продукта</p>
+
+
+<img th:src="@{${product.imageUrl}}" alt="Product Image" class="product-image " style="max-width: 300px;"/>
+<h2 th:text="${product.name}"></h2>
+<p th:text="${product.description}"></p>
+<p th:text="${product.category}"></p>
+<p th:text="${product.price}"></p>
+
+
+<h2>Отзывы:</h2>
+<div th:if="${feedbackList.isEmpty()}">
+    <p>Нет отзывов.</p>
+</div>
+<div th:each="feedback : ${feedbackList}">
+    <p><strong th:text="${feedback.text}">Отзыв</strong></p>
+    <p>Файл:</p>
+    <img th:src="@{/uploads/{fileName}(fileName=${feedback.filePath})}" alt="Отзыв изображение" style="max-width: 300px;">
+</div>
+
+<form th:action="@{/uploadFeedback}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="productId" th:value="${product.id}" />
+    <label>Отзыв:</label>
+    <input type="text" name="feedback" required />
+    <label>Загрузить файл:</label>
+    <input type="file" name="file" required />
+
+    <button type="submit">Добавить отзыв</button>
+</form>
+
+
+<div style="margin-top: 20px;">
+    <a href="/main" class="btn">Вернуться в каталог</a>
+</div>
+
+
+<div authorize="hasRole('SUPER_ADMIN')">
+    <form th:action="@{/product/delete/{id}(id=${product.id})}" method="post">
+        <button type="submit" class="btn btn-danger">Удалить товар</button>
+    </form>
+</div>
+
+
+</body>
+</html>
