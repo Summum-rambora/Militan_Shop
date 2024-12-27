@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users</title>
+</head>
+<body>
+<h1>Users</h1>
+
+<!-- Форма поиска -->
+<form action="/admin/users" method="get">
+  <input type="text" name="search" placeholder="Search users" th:value="${search}">
+  <button type="submit">Search</button>
+</form>
+
+<!-- Если есть ошибка, отображаем сообщение -->
+<div th:if="${param.error}">
+  <p style="color: red;">Error occurred while assigning role!</p>
+</div>
+
+<div th:if="${param.error}">
+  <p th:if="${param.error == 'notfound'}">Пользователь не найден!</p>
+</div>
+
+
+<!-- Таблица с пользователями -->
+<table>
+  <thead>
+  <tr>
+    <th>Username</th>
+    <th>Roles</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <!-- Перебираем пользователей -->
+  <tr th:each="user : ${users}">
+    <td th:text="${user.username}"></td>
+    <td th:text="${user.roles}"></td>
+    <td>
+      <!-- Форма для назначения роли -->
+      <form th:action="@{/assignRole}" method="post">
+        <input type="hidden" name="userId" th:value="${user.id}">
+        <select name="role">
+          <option value="USER">USER</option>
+          <option value="ADMIN">ADMIN</option>
+          <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+        </select>
+        <button type="submit">Назначить роль</button>
+      </form>
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

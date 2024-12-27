@@ -15,6 +15,10 @@
 <main>
   <h1>Список продуктов</h1>
 
+  <div sec:authorize="hasRole('SUPER_ADMIN')">
+    <a href="/admin/users">Страница пользователей</a>
+  </div>
+
   <!-- Ссылка для добавления нового продукта доступна только администратору -->
   <div sec:authorize="hasRole('ADMIN')">
     <a href="/addProduct">Добавить новый продукт</a>
