@@ -1,4 +1,5 @@
 package com.example.militanshop.confg;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,9 +23,12 @@ public class AuthenticationConfig {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .passwordEncoder(passwordEncoder)
-                .usersByUsernameQuery("SELECT username, password, active FROM usr WHERE username = ?")
+                .usersByUsernameQuery("SELECT username, password, IF(active = 1, TRUE, FALSE) FROM usr WHERE username = ?")
                 .authoritiesByUsernameQuery(
-                        "SELECT u.username, ur.roles FROM usr u INNER JOIN user_role ur ON u.id = ur.user_id WHERE u.username = ?"
+                        "SELECT u.username, CONCAT('ROLE_', ur.roles) " +
+                                "FROM usr u " +
+                                "JOIN user_role ur ON u.id = ur.user_id " +
+                                "WHERE u.username = ?"
                 );
     }
 }
